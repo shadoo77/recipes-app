@@ -1,16 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { Context } from '@netlify/functions';
+import { withOriginCheck } from './lib/middleware';
 
-// List of allowed origins
-const allowedOrigins = [
-  'https://your-allowed-domain.com',
-  'http://localhost:5173', // example for local dev
-];
+// 6602e26f184c884b719d7191
 
-export default async (req: Request, context: Context) => {
-  const origin = req.headers.get('origin');
-  console.log({ origin, context: context.server.region, site: context.site });
-  if (origin && !allowedOrigins.includes(origin)) {
-    return new Response('Forbidden', { status: 403 });
-  }
+export default withOriginCheck(async (request: Request, context: Context) => {
   return new Response('Hello, world!');
-};
+});
